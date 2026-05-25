@@ -1,0 +1,295 @@
+body {
+    background-color: #141414;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Netflix Logo */
+.netflix-logo {
+    color: #e50914;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Hero Section */
+.hero {
+    background-image: url('/static/banner.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    position: relative;
+}
+
+.overlay {
+    background: rgba(0,0,0,0.7);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    margin-left: 80px;
+    max-width: 500px;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    font-weight: bold;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Section */
+.section-title {
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/* Movie Card */
+.movie-card { background-color: #1f1f1f;
+     border-radius: 12px;
+     overflow: hidden;
+     transition: transform 0.3s ease;
+     cursor: pointer;
+     height: 100%;
+     width: 100%;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+/* Poster */
+.movie-poster {
+    width: 100%; 
+    aspect-ratio: 2 / 3; 
+    object-fit: cover; 
+    object-position: center; 
+    display: block;
+}
+
+/* Movie Info */
+.movie-info { padding: 15px;
+     text-align: center;
+     min-height: 70px; 
+     display: flex; 
+     align-items: center; 
+     justify-content: center; 
+}
+
+.movie-info h5 { margin: 0; 
+    font-size: 20px; 
+    font-weight: bold; 
+}
+
+/* =========================
+   POPUP MODAL
+========================= */
+
+.modal {
+
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0,0,0,0.85);
+
+    z-index: 9999;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #181818;
+    width: 65%;
+    max-width: 650px;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+}
+
+.modal-banner {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.modal-info {
+    padding: 18px;
+}
+
+.modal-info h1 {
+
+    font-size: 3rem;
+
+    margin-bottom: 15px;
+}
+
+.movie-tags span {
+
+    background: #333;
+
+    padding: 5px 10px;
+
+    border-radius: 5px;
+
+    margin-right: 10px;
+}
+
+.watch-btn {
+
+    margin-top: 20px;
+
+    padding: 12px 25px;
+
+    background: red;
+
+    border: none;
+
+    color: white;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+.close {
+
+    position: absolute;
+
+    right: 20px;
+
+    top: 10px;
+
+    color: white;
+
+    font-size: 40px;
+
+    cursor: pointer;
+
+    z-index: 10000;
+}
+
+.poster-card {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.poster-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-thumb {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.section-title {
+    color: white;
+    font-weight: bold;
+}
+
+.rating-box {
+    color: white;
+    margin-top: 20px;
+}
+
+.stars {
+    display: flex;
+    gap: 10px;
+}
+
+.stars span {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.stars span:hover {
+    transform: scale(1.2);
+}
+
+#ratingText {
+    color: #ccc;
+    font-size: 1rem;
+}
+
+.stars {
+    display: flex;
+    gap: 8px;
+}
+
+.star {
+    font-size: 2rem;
+    color: #555;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.star:hover {
+    transform: scale(1.2);
+}
+
+.star.active {
+    color: gold;
+}
+
+.auth-container {
+    width: 400px;
+    margin: 100px auto;
+    background: rgba(0,0,0,0.85);
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.auth-container h1 {
+    margin-bottom: 20px;
+}
+
+.auth-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+}
+
+.auth-container button {
+    width: 100%;
+    padding: 12px;
+    background: #e50914;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.auth-container button:hover {
+    background: #ff1f1f;
+}
+
+.dashboard {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.logout-btn {
+    background: #e50914;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+}

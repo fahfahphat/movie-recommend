@@ -1,0 +1,41 @@
+username,movie,genre,rating
+Monkeng,Avengers,Action,5
+FHA,Batman,Action,4
+FHA,Titanic,Romance,4
+FHA,Avengers,Action,3
+FHA,Iron Man,Action,3
+FHA,Interstellar,Sci-Fi,3
+FHA,John Wick,Action,4
+Monkeng,Interstellar,Sci-Fi,5
+Monkeng,John Wick,Action,5
+Monkeng,Iron Man,Action,5
+Monkeng,Batman,Action,5
+Monkeng,Titanic,Romance,5
+WISANU,Avengers,Action,3
+WISANU,Iron Man,Action,4
+WISANU,Batman,Action,4
+WISANU,John Wick,Action,3
+WISANU,Interstellar,Sci-Fi,5
+WISANU,Titanic,Romance,4
+FON,Avengers,Action,4
+FON,Iron Man,Action,4
+FON,Batman,Action,4
+FON,John Wick,Action,4
+FON,Interstellar,Sci-Fi,4
+FON,Titanic,Romance,5
+FHA,Star Wars,Sci-Fi,4
+TEST,Avengers,Action,5
+TEST,Batman,Action,5
+TEST,Jaws,Action,5
+FHA,Jaws,Action,4
+WISANU,Jaws,Action,5
+TEST,Interstellar,Sci-Fi,4
+TEST,Titanic,Romance,4
+TEST,Iron Man,Action,4
+TEST,John Wick,Action,4
+TEST,Star Wars,Sci-Fi,4
+TEST2,Avengers,Action,4
+TEST2,Iron Man,Action,4
+TEST2,Batman,Action,4
+TEST2,Jurassic Park,Sci-Fi,3
+TEST,Jurassic Park,Sci-Fi,5

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Movie Recommendation</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark bg-dark px-4">
+    <a class="navbar-brand netflix-logo">NETFLIX</a>
+
+    <div>
+        {% if current_user.is_authenticated %}
+            <a href="/dashboard" class="btn btn-light me-2">
+                {{ current_user.username }}
+            </a>
+            <a href="/logout" class="btn btn-danger">Logout</a>
+        {% else %}
+            <a href="/login" class="btn btn-danger me-2">Login</a>
+            <a href="/register" class="btn btn-light">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="overlay">
+        <div class="hero-content">
+
+            <h1>Movie Recommendation</h1>
+            <p>Discover movies you may love</p>
+
+            <select class="form-select form-select-lg" id="movieSelect">
+                {% for movie in movies %}
+                <option value="{{ movie.title }}">
+                    {{ movie.title }}
+                </option>
+                {% endfor %}
+            </select>
+
+            {% if current_user.is_authenticated %}
+            <button id="recommendBtn"
+                    class="btn btn-danger btn-lg mt-3 w-100">
+                Recommend
+            </button>
+            {% else %}
+            <a href="/login"
+               class="btn btn-secondary btn-lg mt-3 w-100">
+                Login to Recommend
+            </a>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<!-- MOVIES -->
+<div class="container mt-5">
+    <h2 class="section-title mb-4">Popular Movies</h2>
+
+    <div class="row">
+        {% for movie in movies %}
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
+
+            <div class="poster-card"
+                 onclick="openPopup('{{ movie.title }}')">
+
+                <img src="{{ url_for('static', filename='posters/' + movie.poster) }}"
+                     class="img-fluid rounded movie-thumb">
+
+                <p class="text-center mt-2">
+                    {{ movie.title }}
+                </p>
+
+                 <!-- ⭐ rating -->
+                <p class="text-center text-warning mb-0">
+                            ⭐ {{ movie.avg_rating }}
+                </p>
+                <!-- 👥 review count -->
+                <p class="text-center small text-primary fw-bold">
+                            👥 {{ movie.count }} reviews
+                </p>
+
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- MODAL -->
+<div id="movieModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close">&times;</span>
+
+        <img id="popupImage" class="modal-banner">
+
+        <div class="modal-info">
+
+            <h1 id="popupTitle"></h1>
+            <p id="popupDescription"></p>
+
+            <!-- STARS -->
+            <div class="rating-box mt-4">
+                <h5>Rate this movie</h5>
+
+                <div class="stars">
+                    <span class="star" data-value="1">★</span>
+                    <span class="star" data-value="2">★</span>
+                    <span class="star" data-value="3">★</span>
+                    <span class="star" data-value="4">★</span>
+                    <span class="star" data-value="5">★</span>
+                </div>
+
+                <p id="ratingText" class="mt-2">No rating yet</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- =========================
+JS
+========================= -->
+<script>
+
+function redirectLogin() {
+    alert("Please login first");
+    window.location.href = "/login";
+}
+
+/* movies from Flask */
+window.movies = {{ movies | tojson | safe }};
+
+/* ELEMENTS */
+const modal = document.getElementById("movieModal");
+const closeBtn = document.querySelector(".close");
+const recommendBtn = document.getElementById("recommendBtn");
+const movieSelect = document.getElementById("movieSelect");
+
+const popupTitle = document.getElementById("popupTitle");
+const popupImage = document.getElementById("popupImage");
+const popupDescription = document.getElementById("popupDescription");
+const ratingText = document.getElementById("ratingText");
+
+const stars = document.querySelectorAll(".star");
+
+let currentMovie = "";
+
+/* =========================
+UPDATE STARS
+========================= */
+function updateStars(rating) {
+    rating = Number(rating || 0);
+
+    stars.forEach(star => {
+        if (Number(star.dataset.value) <= rating) {
+            star.classList.add("active");
+        } else {
+            star.classList.remove("active");
+        }
+    });
+}
+
+/* =========================
+OPEN POPUP + LOAD RATING
+========================= */
+function openPopup(movieName) {
+
+    const movieData = window.movies.find(m => m.title === movieName);
+
+    if (!movieData) return;
+
+    currentMovie = movieName;
+
+    popupTitle.innerText = movieData.title;
+    popupImage.src = "/static/posters/" + movieData.poster;
+    popupDescription.innerText = movieData.description;
+
+    fetch('/get_rating/' + encodeURIComponent(movieName))
+        .then(res => res.json())
+        .then(data => {
+            const savedRating = Number(data.rating || 0);
+
+            updateStars(savedRating);
+
+            ratingText.innerText =
+                savedRating > 0
+                    ? "Your Rating: " + savedRating + "/5"
+                    : "No rating yet";
+        });
+
+    modal.style.display = "flex";
+}
+
+/* =========================
+CLICK STAR (FIXED)
+========================= */
+stars.forEach(star => {
+
+    star.addEventListener("click", () => {
+
+        const isLoggedIn = {{ current_user.is_authenticated | tojson }};
+
+        if (!isLoggedIn) {
+            alert("Please login first");
+            window.location.href = "/login";
+            return;
+        }
+
+        const rating = Number(star.dataset.value);
+
+        updateStars(rating);
+        ratingText.innerText = "Your Rating: " + rating + "/5";
+
+        /* ✅ FIX: correct way to get genre */
+        const movieData = window.movies.find(m => m.title === currentMovie);
+        const genre = movieData ? movieData.genre : "";
+
+        fetch('/save_rating', {
+              method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body:
+                'movie=' + encodeURIComponent(currentMovie) +
+                '&genre=' + encodeURIComponent(genre) +
+                '&rating=' + encodeURIComponent(rating)
+        })
+           .then(response => response.json())
+           .then(data => {
+
+    // ปิด popup
+             modal.style.display = "none";
+
+    // refresh หน้า
+            location.reload();    
+                
+        });
+        
+
+    });
+
+});
+
+/* =========================
+RECOMMEND
+========================= */
+if (recommendBtn) {
+    recommendBtn.onclick = function () {
+        openPopup(movieSelect.value);
+    }
+}
+
+/* =========================
+CLOSE MODAL
+========================= */
+closeBtn.onclick = () => modal.style.display = "none";
+
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+</script>
+
+</body>
+</html>

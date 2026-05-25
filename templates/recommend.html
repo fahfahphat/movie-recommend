@@ -1,0 +1,29 @@
+<h1>
+    Recommended For You
+</h1>
+
+<h3>
+    Favorite Genre:
+    {{ favorite_genre }}
+</h3>
+
+<div class="row">
+
+{% for movie in recommendations %}
+
+<div class="col-lg-3 mb-4">
+
+    <img
+    src="{{ url_for('static',
+    filename='posters/' + movie.poster) }}"
+    class="img-fluid">
+
+    <h5>
+        {{ movie.title }}
+    </h5>
+
+</div>
+
+{% endfor %}
+
+</div>
